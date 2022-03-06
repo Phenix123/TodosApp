@@ -1,42 +1,8 @@
 import { React, useState } from "react";
 import "./App.css";
-
-function Todo({ todo, index, completeTodo, removeTodo }) {
-  return (
-    <div
-      className="todo"
-      style={{ textDecoration: todo.isCompleted ? "line-through" : "" }}
-    >
-      {todo.text}
-      <div>
-        <button onClick={() => completeTodo(index)}>Complete</button>
-        <button onClick={() => removeTodo(index)}>&times;</button>
-      </div>
-    </div>
-  );
-}
-
-function TodoForm({ addTodo }) {
-  const [value, setValue] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!value) return;
-    addTodo(value);
-    setValue("");
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        className="input"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-    </form>
-  );
-}
+import ToDo from "./components/Todo";
+import TodoForm from "./components/ToDoForm";
+//import { data } from "./data.json";
 
 function App() {
   const [todos, setTodos] = useState([
@@ -49,10 +15,23 @@ function App() {
       isCompleted: false,
     },
     {
-      text: "Build really cool todo app",
+      text: "Shoping",
       isCompleted: false,
     },
+    {
+      text: "Build really big house",
+      isCompleted: false,
+    },
+    {
+      text: "Plant a tree",
+      isCompleted: false,
+    },
+    {
+      text: "Raise a son",
+      isCompleted: true,
+    },
   ]);
+  //const [todos, setTodos] = useState(data);
 
   const addTodo = (text) => {
     const newTodos = [...todos, { text }];
@@ -61,7 +40,7 @@ function App() {
 
   const completeTodo = (index) => {
     const newTodos = [...todos];
-    newTodos[index].isCompleted = true;
+    newTodos[index].isCompleted = !newTodos[index].isCompleted;
     setTodos(newTodos);
   };
 
@@ -73,18 +52,20 @@ function App() {
 
   return (
     <div className="app">
-      <div className="todo-list">
-        {todos.map((todo, index) => (
-          <Todo
-            key={index}
-            index={index}
-            todo={todo}
-            completeTodo={completeTodo}
-            removeTodo={removeTodo}
-          />
-        ))}
+      <div className="container">
+        <div className="todo-list">
+          {todos.map((todo, index) => (
+            <ToDo
+              key={index}
+              index={index}
+              toDo={todo}
+              completeToDo={completeTodo}
+              removeToDo={removeTodo}
+            />
+          ))}
+          <TodoForm addToDo={addTodo} />
+        </div>
       </div>
-      <TodoForm addTodo={addTodo} />
     </div>
   );
 }
